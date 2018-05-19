@@ -48,42 +48,32 @@ public class AvlTree extends BinaryTree {
 		if (currentNode.nodeData > newValue) {
 			if (currentNode.leftSon != null) {
 				isAdded = addHelper(newValue, currentNode.leftSon);
-
-				if (isAdded) {
-					currentNode.height = getHeight(currentNode);
-					if (getBalanceFactor(currentNode) == 2) {
-						if (currentNode == root) {
-							root = rotate(currentNode);
-						}
-					}
-				}
-				return isAdded;
 			} else {
 				currentNode.leftSon = new AvlNode(newValue, currentNode,currentNode.depth+1);
 				currentNode.height = getHeight(currentNode);
+				isAdded = true;
 			}
 		} else if (currentNode.nodeData < newValue) {
 			if (currentNode.rightSon != null) {
 				isAdded = addHelper(newValue, currentNode.rightSon);
-
-				if (isAdded) {
-					currentNode.height = getHeight(currentNode);
-					if (getBalanceFactor(currentNode) == -2) {
-						if (currentNode == root) {
-							root = rotate(currentNode);
-						}
-					}
-				}
-				return isAdded;
 			} else {
 				currentNode.rightSon = new AvlNode(newValue, currentNode,currentNode.depth+1);
 				currentNode.height = getHeight(currentNode);
+				isAdded = true;
 			}
 		} else {
 			return false;
 		}
 
-		return true;
+		if (isAdded) {
+			currentNode.height = getHeight(currentNode);
+			if (Math.abs(getBalanceFactor(currentNode)) == 2) {
+				if (currentNode == root) {
+					root = rotate(currentNode);
+				}
+			}
+		}
+		return isAdded;
 	}
 
 	private int getHeight(AvlNode node) {
