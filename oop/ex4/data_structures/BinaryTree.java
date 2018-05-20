@@ -215,7 +215,7 @@ public class BinaryTree {
         System.out.println(myTree.delete(4));
         myTree.delete(2);
         System.out.println(myTree.size==0);
-        System.out.println(myTree.delete(2));
+        System.out.println(!myTree.delete(2));
 
 
     }
