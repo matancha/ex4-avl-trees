@@ -66,6 +66,48 @@ public class AvlTree extends BinaryTree {
 		return currentNode;
 	}
 
+	/*public boolean delete(int toDelete){
+		if (contains(toDelete) == -1){
+			return false;
+		}
+
+		root = deleteHelper(toDelete, root);
+		return true;
+	}
+
+	private AvlNode deleteHelper(int toDelete, AvlNode currentNode) {
+		if (currentNode == null) {
+			return null;
+		} else if (currentNode.nodeData == toDelete){
+			return currentNode.rightSon;
+		}
+
+		if (currentNode.nodeData > toDelete) {
+			currentNode.leftSon = deleteHelper(toDelete, currentNode.leftSon);
+		}
+		else if (currentNode.nodeData < toDelete) {
+			currentNode.rightSon = deleteHelper(toDelete, currentNode.rightSon);
+		}
+
+		return currentNode;
+	}
+
+	public int contains(int searchVal) {
+		AvlNode currentNode = root;
+		int depth = 0;
+		while (currentNode != null) {
+			if (currentNode.nodeData > searchVal) {
+				currentNode = currentNode.leftSon;
+			} else if (currentNode.nodeData < searchVal) {
+				currentNode = currentNode.rightSon;
+			} else {
+				return depth;
+			}
+			depth += 1;
+		}
+		return -1;
+	}*/
+
 	private int getHeight(AvlNode node) {
 		if (node == null) {
 			return -1;
@@ -76,9 +118,6 @@ public class AvlTree extends BinaryTree {
 	}
 
 	private int getBalanceFactor(AvlNode node) {
-		/*System.out.println(String.format("Node %d, LeftSon height: %d, RightSon height: %d",
-				node.nodeData, getHeight(node.leftSon), getHeight(node.rightSon)));
-		System.out.println(getHeight(node.leftSon) - getHeight(node.rightSon));*/
 		return getHeight(node.leftSon) - getHeight(node.rightSon);
 	}
 
@@ -88,25 +127,42 @@ public class AvlTree extends BinaryTree {
 
 		switch (unbalancedType) {
 			case LL:
-				subtreeRoot = unbalancedNode.leftSon;
-				subtreeRoot.rightSon = unbalancedNode;
-				unbalancedNode.leftSon = null;
-				subtreeRoot.rightSon.height = getHeight(subtreeRoot.rightSon);
-				subtreeRoot.leftSon.height = getHeight(subtreeRoot.leftSon);
-				subtreeRoot.height = getHeight(subtreeRoot);
+				subtreeRoot = rightRotate(unbalancedNode);
 				break;
 			case LR:
-				unbalancedNode.leftSon.rightSon.leftSon = unbalancedNode.leftSon;
-				unbalancedNode.leftSon = unbalancedNode.leftSon.rightSon;
-				unbalancedNode.leftSon.leftSon.rightSon = null;
-				subtreeRoot = unbalancedNode.leftSon;
-				subtreeRoot.rightSon = unbalancedNode;
-				unbalancedNode.leftSon = null;
-				subtreeRoot.rightSon.height = getHeight(subtreeRoot.rightSon);
-				subtreeRoot.leftSon.height = getHeight(subtreeRoot.leftSon);
-				subtreeRoot.height = getHeight(subtreeRoot);
+				unbalancedNode.leftSon = leftRotate(unbalancedNode.leftSon);
+				subtreeRoot = rightRotate(unbalancedNode);
+				break;
+			case RR:
+				subtreeRoot = leftRotate(unbalancedNode);
+				break;
+			case RL:
+				unbalancedNode.rightSon = rightRotate(unbalancedNode.rightSon);
+				subtreeRoot = leftRotate(unbalancedNode);
 				break;
 		}
+		subtreeRoot.rightSon.height = getHeight(subtreeRoot.rightSon);
+		subtreeRoot.leftSon.height = getHeight(subtreeRoot.leftSon);
+		subtreeRoot.height = getHeight(subtreeRoot);
+
+		return subtreeRoot;
+	}
+
+	private AvlNode leftRotate(AvlNode node) {
+		AvlNode subtreeRoot;
+
+		subtreeRoot = node.rightSon;
+		subtreeRoot.leftSon = node;
+		node.rightSon = null;
+		return subtreeRoot;
+	}
+
+	private AvlNode rightRotate(AvlNode node) {
+		AvlNode subtreeRoot;
+
+		subtreeRoot = node.leftSon;
+		subtreeRoot.rightSon = node;
+		node.leftSon = null;
 		return subtreeRoot;
 	}
 
