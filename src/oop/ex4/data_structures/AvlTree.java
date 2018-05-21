@@ -28,6 +28,15 @@ public class AvlTree extends BinaryTree {
 		return true;
 	}
 
+	public boolean delete(int toDelete){
+		if (! super.delete(toDelete)){
+			return false;
+		}
+
+		root = balanceTree(toDelete, root);
+		return true;
+	}
+
 	private TreeNode balanceTree(int newValue, TreeNode currentNode) {
 		if (currentNode == null) {
 			return null;
@@ -46,32 +55,6 @@ public class AvlTree extends BinaryTree {
 		}
 		return currentNode;
 	}
-
-	/*public boolean delete(int toDelete){
-		if (contains(toDelete) == -1){
-			return false;
-		}
-
-		root = deleteHelper(toDelete, (TreeNode)root);
-		return true;
-	}
-
-	private TreeNode deleteHelper(int toDelete, TreeNode currentNode) {
-		if (currentNode == null) {
-			return null;
-		} else if (currentNode.nodeData == toDelete){
-			return currentNode.rightSon;
-		}
-
-		if (currentNode.nodeData > toDelete) {
-			currentNode.leftSon = deleteHelper(toDelete, currentNode.leftSon);
-		}
-		else if (currentNode.nodeData < toDelete) {
-			currentNode.rightSon = deleteHelper(toDelete, currentNode.rightSon);
-		}
-
-		return currentNode;
-	}*/
 
 	private int getBalanceFactor(TreeNode node) {
 		return getHeight(node.leftSon) - getHeight(node.rightson);
