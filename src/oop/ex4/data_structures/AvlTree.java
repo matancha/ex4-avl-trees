@@ -1,31 +1,12 @@
 package oop.ex4.data_structures;
 
 public class AvlTree extends BinaryTree {
-	private AvlNode root;
-
-	public AvlTree(){
-		this.root = new AvlNode(5, null, 0);
+	public AvlTree(int rootData){
+		super(5);
 	}
 
-	protected AvlNode getRoot(){
+	protected TreeNode getRoot(){
 		return root;
-	}
-
-	public class AvlNode extends TreeNode {
-		private int height;
-		protected AvlNode leftSon;
-		protected AvlNode rightSon;
-
-		private AvlNode(int nodeData, AvlNode ancestor, int depth){
-			super(nodeData, ancestor, depth);
-			this.height = 0;
-			this.leftSon = null;
-			this.rightSon = null;
-		}
-
-		public int getHeight() {
-			return height;
-		}
 	}
 
 	private enum UnbalancedState {RL, RR, LL, LR, DEFAULT}
@@ -39,24 +20,24 @@ public class AvlTree extends BinaryTree {
 	 */
 	@Override
 	public boolean add(int newValue){
-		if (contains(newValue) != -1){
+		if (! super.add(newValue)) {
 			return false;
 		}
 
-		root = addHelper(newValue, root);
+		root = balanceTree(newValue, root);
 		return true;
 	}
 
-	protected AvlNode addHelper(int newValue, AvlNode currentNode) {
+	private TreeNode balanceTree(int newValue, TreeNode currentNode) {
 		if (currentNode == null) {
-			return new AvlNode(newValue, null, 0);
+			return null;
 		}
 
 		if (currentNode.nodeData > newValue) {
-			currentNode.leftSon = addHelper(newValue, currentNode.leftSon);
+			currentNode.leftSon = balanceTree(newValue, currentNode.leftSon);
 		}
 		else if (currentNode.nodeData < newValue) {
-			currentNode.rightSon = addHelper(newValue, currentNode.rightSon);
+			currentNode.rightson = balanceTree(newValue, currentNode.rightson);
 		}
 
 		currentNode.height = getHeight(currentNode);
@@ -71,11 +52,11 @@ public class AvlTree extends BinaryTree {
 			return false;
 		}
 
-		root = deleteHelper(toDelete, root);
+		root = deleteHelper(toDelete, (TreeNode)root);
 		return true;
 	}
 
-	private AvlNode deleteHelper(int toDelete, AvlNode currentNode) {
+	private TreeNode deleteHelper(int toDelete, TreeNode currentNode) {
 		if (currentNode == null) {
 			return null;
 		} else if (currentNode.nodeData == toDelete){
@@ -90,39 +71,23 @@ public class AvlTree extends BinaryTree {
 		}
 
 		return currentNode;
-	}
-
-	public int contains(int searchVal) {
-		AvlNode currentNode = root;
-		int depth = 0;
-		while (currentNode != null) {
-			if (currentNode.nodeData > searchVal) {
-				currentNode = currentNode.leftSon;
-			} else if (currentNode.nodeData < searchVal) {
-				currentNode = currentNode.rightSon;
-			} else {
-				return depth;
-			}
-			depth += 1;
-		}
-		return -1;
 	}*/
 
-	private int getHeight(AvlNode node) {
+	private int getBalanceFactor(TreeNode node) {
+		return getHeight(node.leftSon) - getHeight(node.rightson);
+	}
+
+	private int getHeight(TreeNode node) {
 		if (node == null) {
 			return -1;
 		}
 
 		return Math.max(getHeight(node.leftSon),
-				getHeight(node.rightSon)) + 1;
+				getHeight(node.rightson)) + 1;
 	}
 
-	private int getBalanceFactor(AvlNode node) {
-		return getHeight(node.leftSon) - getHeight(node.rightSon);
-	}
-
-	private AvlNode rotate(AvlNode unbalancedNode) {
-		AvlNode subtreeRoot = unbalancedNode;
+	private TreeNode rotate(TreeNode unbalancedNode) {
+		TreeNode subtreeRoot = unbalancedNode;
 		UnbalancedState unbalancedType = getUnbalancedState(unbalancedNode);
 
 		switch (unbalancedType) {
@@ -137,46 +102,46 @@ public class AvlTree extends BinaryTree {
 				subtreeRoot = leftRotate(unbalancedNode);
 				break;
 			case RL:
-				unbalancedNode.rightSon = rightRotate(unbalancedNode.rightSon);
+				unbalancedNode.rightson = rightRotate(unbalancedNode.rightson);
 				subtreeRoot = leftRotate(unbalancedNode);
 				break;
 		}
-		subtreeRoot.rightSon.height = getHeight(subtreeRoot.rightSon);
+		subtreeRoot.rightson.height = getHeight(subtreeRoot.rightson);
 		subtreeRoot.leftSon.height = getHeight(subtreeRoot.leftSon);
 		subtreeRoot.height = getHeight(subtreeRoot);
 
 		return subtreeRoot;
 	}
 
-	private AvlNode leftRotate(AvlNode node) {
-		AvlNode subtreeRoot;
+	private TreeNode leftRotate(TreeNode node) {
+		TreeNode subtreeRoot;
 
-		subtreeRoot = node.rightSon;
+		subtreeRoot = node.rightson;
 		subtreeRoot.leftSon = node;
-		node.rightSon = null;
+		node.rightson = null;
 		return subtreeRoot;
 	}
 
-	private AvlNode rightRotate(AvlNode node) {
-		AvlNode subtreeRoot;
+	private TreeNode rightRotate(TreeNode node) {
+		TreeNode subtreeRoot;
 
 		subtreeRoot = node.leftSon;
-		subtreeRoot.rightSon = node;
+		subtreeRoot.rightson = node;
 		node.leftSon = null;
 		return subtreeRoot;
 	}
 
-	private UnbalancedState getUnbalancedState(AvlNode unbalancedNode) {
+	private UnbalancedState getUnbalancedState(TreeNode unbalancedNode) {
 		if (getBalanceFactor(unbalancedNode) == 2) {
 			if (unbalancedNode.leftSon.leftSon != null){
 				return UnbalancedState.LL;
-			} else if (unbalancedNode.leftSon.rightSon != null) {
+			} else if (unbalancedNode.leftSon.rightson != null) {
 				return UnbalancedState.LR;
 			}
 		} else if (getBalanceFactor(unbalancedNode) == -2) {
-			if (unbalancedNode.rightSon.leftSon != null){
+			if (unbalancedNode.rightson.leftSon != null){
 				return UnbalancedState.RL;
-			} else if (unbalancedNode.rightSon.rightSon != null) {
+			} else if (unbalancedNode.rightson.rightson != null) {
 				return UnbalancedState.RR;
 			}
 		}
