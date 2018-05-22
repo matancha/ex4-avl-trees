@@ -78,13 +78,13 @@ public class AvlTree extends BinaryTree {
 	}
 
 	private int getHeight(TreeNode node) {
-		if (node == null) {
-			return -1;
-		}
+        if (node == null) {
+            return -1;
+        }
 
-		return Math.max(getHeight(node.leftSon),
-				getHeight(node.rightson)) + 1;
-	}
+        return Math.max(getHeight(node.leftSon),
+                getHeight(node.rightson)) + 1;
+    }
 
 	private TreeNode rotate(TreeNode unbalancedNode) {
 		TreeNode subtreeRoot = unbalancedNode;
