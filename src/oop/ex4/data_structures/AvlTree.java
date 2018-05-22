@@ -46,7 +46,7 @@ public class AvlTree extends BinaryTree {
 			currentNode.leftSon = balanceTree(newValue, currentNode.leftSon);
 		}
 		else if (currentNode.nodeData < newValue) {
-			currentNode.rightson = balanceTree(newValue, currentNode.rightson);
+			currentNode.rightSon = balanceTree(newValue, currentNode.rightSon);
 		}
 
 		currentNode.height = getHeight(currentNode);
@@ -57,7 +57,7 @@ public class AvlTree extends BinaryTree {
 	}
 
 	private int getBalanceFactor(TreeNode node) {
-		return getHeight(node.leftSon) - getHeight(node.rightson);
+		return getHeight(node.leftSon) - getHeight(node.rightSon);
 	}
 
 	private int getHeight(TreeNode node) {
@@ -66,7 +66,7 @@ public class AvlTree extends BinaryTree {
 		}
 
 		return Math.max(getHeight(node.leftSon),
-				getHeight(node.rightson)) + 1;
+				getHeight(node.rightSon)) + 1;
 	}
 
 	private TreeNode rotate(TreeNode unbalancedNode) {
@@ -85,11 +85,11 @@ public class AvlTree extends BinaryTree {
 				subtreeRoot = leftRotate(unbalancedNode);
 				break;
 			case RL:
-				unbalancedNode.rightson = rightRotate(unbalancedNode.rightson);
+				unbalancedNode.rightSon = rightRotate(unbalancedNode.rightSon);
 				subtreeRoot = leftRotate(unbalancedNode);
 				break;
 		}
-		subtreeRoot.rightson.height = getHeight(subtreeRoot.rightson);
+		subtreeRoot.rightSon.height = getHeight(subtreeRoot.rightSon);
 		subtreeRoot.leftSon.height = getHeight(subtreeRoot.leftSon);
 		subtreeRoot.height = getHeight(subtreeRoot);
 
@@ -99,9 +99,9 @@ public class AvlTree extends BinaryTree {
 	private TreeNode leftRotate(TreeNode node) {
 		TreeNode subtreeRoot;
 
-		subtreeRoot = node.rightson;
+		subtreeRoot = node.rightSon;
 		subtreeRoot.leftSon = node;
-		node.rightson = null;
+		node.rightSon = null;
 		return subtreeRoot;
 	}
 
@@ -109,7 +109,7 @@ public class AvlTree extends BinaryTree {
 		TreeNode subtreeRoot;
 
 		subtreeRoot = node.leftSon;
-		subtreeRoot.rightson = node;
+		subtreeRoot.rightSon = node;
 		node.leftSon = null;
 		return subtreeRoot;
 	}
@@ -118,16 +118,30 @@ public class AvlTree extends BinaryTree {
 		if (getBalanceFactor(unbalancedNode) == 2) {
 			if (unbalancedNode.leftSon.leftSon != null){
 				return UnbalancedState.LL;
-			} else if (unbalancedNode.leftSon.rightson != null) {
+			} else if (unbalancedNode.leftSon.rightSon != null) {
 				return UnbalancedState.LR;
 			}
 		} else if (getBalanceFactor(unbalancedNode) == -2) {
-			if (unbalancedNode.rightson.leftSon != null){
+			if (unbalancedNode.rightSon.leftSon != null){
 				return UnbalancedState.RL;
-			} else if (unbalancedNode.rightson.rightson != null) {
+			} else if (unbalancedNode.rightSon.rightSon != null) {
 				return UnbalancedState.RR;
 			}
 		}
 		return UnbalancedState.DEFAULT;
+	}
+
+	public static int findMinNodes(int h) {
+		double res = fib(h+3)-1;
+		return (int)res;
+	}
+
+	private static double fib(int n) {
+		double phi = (Math.sqrt(5)+1)/2;
+		return (Math.pow(phi, n)-Math.pow(-phi, -n))/Math.sqrt(5);
+	}
+
+	public static int findMaxNodes(int h) {
+		return (int)Math.pow(2, h+1)-1;
 	}
 }

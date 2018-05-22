@@ -22,7 +22,7 @@ public class testAvlTree {
 		tree.add(3);
 		tree.add(2);
 		Assert.assertEquals(3, tree.getRoot().nodeData);
-		Assert.assertEquals(5, tree.getRoot().rightson.nodeData);
+		Assert.assertEquals(5, tree.getRoot().rightSon.nodeData);
 		Assert.assertEquals(2, tree.getRoot().leftSon.nodeData);
 		Assert.assertEquals(1, tree.getRoot().getHeight());
 	}
@@ -36,7 +36,7 @@ public class testAvlTree {
 		tree.add(3);
 		Assert.assertEquals(5, tree.getRoot().nodeData);
 		Assert.assertEquals(3, tree.getRoot().leftSon.nodeData);
-		Assert.assertEquals(4, tree.getRoot().leftSon.rightson.nodeData);
+		Assert.assertEquals(4, tree.getRoot().leftSon.rightSon.nodeData);
 		Assert.assertEquals(2, tree.getRoot().leftSon.leftSon.nodeData);
 	}
 
@@ -45,7 +45,7 @@ public class testAvlTree {
 		tree.add(6);
 		tree.add(8);
 		Assert.assertEquals(6, tree.getRoot().nodeData);
-		Assert.assertEquals(8, tree.getRoot().rightson.nodeData);
+		Assert.assertEquals(8, tree.getRoot().rightSon.nodeData);
 		Assert.assertEquals(5, tree.getRoot().leftSon.nodeData);
 	}
 
@@ -54,7 +54,7 @@ public class testAvlTree {
 		tree.add(8);
 		tree.add(6);
 		Assert.assertEquals(6, tree.getRoot().nodeData);
-		Assert.assertEquals(8, tree.getRoot().rightson.nodeData);
+		Assert.assertEquals(8, tree.getRoot().rightSon.nodeData);
 		Assert.assertEquals(5, tree.getRoot().leftSon.nodeData);
 	}
 
@@ -70,6 +70,22 @@ public class testAvlTree {
 		tree.add(10);
 		tree.add(11);
 		Assert.assertEquals(true, tree.delete(10));
-		Assert.assertEquals(11, tree.getRoot().rightson.nodeData);
+		Assert.assertEquals(11, tree.getRoot().rightSon.nodeData);
+	}
+
+	@Test
+	public void getMinNodes() {
+		Assert.assertEquals(2, AvlTree.findMinNodes(1));
+		Assert.assertEquals(4, AvlTree.findMinNodes(2));
+		Assert.assertEquals(7, AvlTree.findMinNodes(3));
+		Assert.assertEquals(12, AvlTree.findMinNodes(4));
+	}
+
+	@Test
+	public void getMaxNodes() {
+		Assert.assertEquals(3, AvlTree.findMaxNodes(1));
+		Assert.assertEquals(7, AvlTree.findMaxNodes(2));
+		Assert.assertEquals(15, AvlTree.findMaxNodes(3));
+		Assert.assertEquals(31, AvlTree.findMaxNodes(4));
 	}
 }
