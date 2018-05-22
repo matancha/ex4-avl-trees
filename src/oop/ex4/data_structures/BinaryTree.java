@@ -16,6 +16,7 @@ public class BinaryTree implements Iterable{
      */
     BinaryTree(){
         root=null;
+        size=0;
     }
 
     /**
@@ -28,13 +29,21 @@ public class BinaryTree implements Iterable{
         }
     }
 
+
     /**
-     * constructor that creates tree with with the only one node.
-     * @param rootData-data for the first node.
+     * This constructor create copy of
+     * @param binaryTree Tree for coping
      */
-    BinaryTree(int rootData){
-        this.root=new TreeNode(rootData,0);
-        this.size=1;
+    public BinaryTree(BinaryTree binaryTree){
+         root=null;
+         Iterator<Integer> iter=binaryTree.iterator();
+         int[] data=new int[binaryTree.size()];
+         for (int i=0;i<binaryTree.size();i++){
+             data[i]=iter.next();
+         }
+         inserter(0,binaryTree.size(),data);
+
+
     }
 
     /**
@@ -85,21 +94,45 @@ public class BinaryTree implements Iterable{
         }
 
     }
+
+    /**
+     * this method for iteration on tree data.
+     * It had to create array that contains sorted data,because our design
+     * without ancestor of node and we are not able to use successor for iteration.
+     * @return Iterator of tree data.
+     */
     public Iterator<Integer> iterator(){
+        /*this class implements iterator of tree data. */
+//        try {
+//            if (size==0){
+//                throw NullPointerException;
+//            }
+//        }
         class TreeIterator implements Iterator<Integer>{
-            private TreeNode current;
+            /*this array for containing all data of tree in sorted order. */
             private int[] sortedList;
+            /*index in inserting tree data to the array and for iteration.*/
             int index;
+            /*Creates TreeIterator. */
             TreeIterator(){
                 sortedList=new int[size];
                 index=0;
                 createList(root);
                 index=0;
-            }public boolean hasNext(){
+            }
+
+            /**
+             * this function check if there is anymore elements.
+             * @return true if there are elements that was not returned,false otherwise.
+             */
+            public boolean hasNext(){
                 return index<sortedList.length;
             }
 
-
+            /**
+             * this check if there are elements that weren't returned,and return next if there is.
+             * @return next value if there is some.
+             */
             @Override
             public Integer next() {
                 if (hasNext()){
@@ -109,6 +142,11 @@ public class BinaryTree implements Iterable{
                 return -1;
             }
 
+            /**
+             * this method create sorted array.
+             * It firstly will come down to
+             * @param node-node of the tree for next adding
+             */
             private void createList(TreeNode node){
                 if (node.leftSon!=null){
                     createList(node.leftSon);
@@ -123,6 +161,23 @@ public class BinaryTree implements Iterable{
     }
 
     /**
+     * This method insert sorted array into the tree.
+     * @param low low bound of part of the array
+     *            that we are working with
+     * @param high high bound
+     * @param data integer for inserting into the tree.
+     */
+    private void inserter(int low,int high,int[] data){
+        if (high>low){
+            int mid=(low+high)/2;
+            add(data[mid]);
+            inserter(low,mid,data);
+            inserter(mid,high,data);
+        }
+
+    }
+
+    /**
      * Add a new node with given key to the tree.
      * @param newValue the value of the new node to add
      * @return true if the value to add not already in the tree
@@ -131,6 +186,7 @@ public class BinaryTree implements Iterable{
     public boolean add(int newValue){
         if (root==null){
             root=new TreeNode(newValue,0);
+            size++;
             return true;
         }
         if (contains(newValue)==-1){
@@ -139,7 +195,6 @@ public class BinaryTree implements Iterable{
         }
         return false;
     }
-
     /**
      * help to add given value with recursion.
      * @param newValue the value of the new node to add
@@ -321,7 +376,7 @@ public class BinaryTree implements Iterable{
 
     /**
      * find node,such that one of the sons is searched Value,if search Value in the tree,null otherwise.
-     * For example if w ehave tree 2,3,4 and 3 is a root and value that we are
+     * For example if we have tree 2,3,4 and 3 is a root and value that we are
      * searching for it is 4,so node with data 3 will be returned,because one of the sons
      * of 3 is node with data 4.
      * @param searchVal value that we are search in the tree.
@@ -348,32 +403,36 @@ public class BinaryTree implements Iterable{
         return currentNode;
     }
     public static void main(String[] args){
-        BinaryTree myTree=new BinaryTree(3);
+        BinaryTree myTree=new BinaryTree();
+        myTree.add(3);
         System.out.println(myTree.root.nodeData==3);
         myTree.add(4);
         System.out.println(myTree.contains(4)==1);
         System.out.println(myTree.root.rightSon.nodeData==4);
         myTree.add(2);
-        System.out.println(myTree.contains(2)==1);
-        System.out.println(!myTree.add(2));
-        System.out.println(myTree.root.getNumberOfSuns()==2);
-        System.out.println(myTree.size()==3);
-        System.out.println(myTree.contains(4)==1);
-        myTree.delete(3);
-        System.out.println(myTree.contains(3)==-1);
-        System.out.println(myTree.size()==2);
-        System.out.println(!myTree.delete(3));
-        System.out.println(myTree.root.depth==0);
-        System.out.println(myTree.contains(4)==0);
-        System.out.println(myTree.delete(4));
-        System.out.println(myTree.contains(2)==0);
+//        System.out.println(myTree.contains(2)==1);
+//        System.out.println(!myTree.add(2));
+//        System.out.println(myTree.root.getNumberOfSuns()==2);
+//        System.out.println(myTree.size);
+//        System.out.println(myTree.size()==3);
+//        System.out.println(myTree.contains(4)==1);
+//        myTree.delete(3);
+//        System.out.println(myTree.contains(3)==-1);
+//        System.out.println(myTree.size()==2);
+//        System.out.println(!myTree.delete(3));
+//        System.out.println(myTree.root.depth==0);
+//        System.out.println(myTree.contains(4)==0);
+//        System.out.println(myTree.delete(4));
+//        System.out.println(myTree.contains(2)==0);
+//
+//        myTree.delete(2);
+//        System.out.println(myTree.size==0);
+//        System.out.println(!myTree.delete(2));
 
-        myTree.delete(2);
-        System.out.println(myTree.size==0);
-        System.out.println(!myTree.delete(2));
-//        for (Object node:myTree){
-//            System.out.println(node);
-//        }
+        Iterator iter=myTree.iterator();
+        for (int i=0;i<myTree.size;i++){
+            System.out.println(iter.next());
+        }
 
     }
 }
