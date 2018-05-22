@@ -37,7 +37,6 @@ public class AvlTree extends BinaryTree {
 
 	/**
 	 * Add a new node with the given key to the tree.
-	 *
 	 * @param newValue the value of the new node to add.
 	 * @return true if the value to add is not already in the tree and it was successfully added,
 	 * false otherwise.
@@ -52,6 +51,12 @@ public class AvlTree extends BinaryTree {
 		return true;
 	}
 
+	/**
+	 * Delete a node with the given key to the tree.
+	 * @param toDelete the value of the new node to delete.
+	 * @return true if the value to delete is in the tree and it was successfully deleted,
+	 * false otherwise.
+	 */
 	@Override
 	public boolean delete(int toDelete){
 		if (! super.delete(toDelete)){
