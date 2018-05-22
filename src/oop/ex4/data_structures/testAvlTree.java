@@ -6,11 +6,12 @@ public class testAvlTree {
 	private AvlTree tree;
 
 	public testAvlTree(){
-		tree = new AvlTree(5);
+		tree = new AvlTree();
 	}
 
 	@Test
 	public void addNodeToTree() {
+		Assert.assertEquals(true, tree.add(5));
 		Assert.assertEquals(true, tree.add(3));
 		Assert.assertEquals(1, tree.getRoot().getHeight());
 		Assert.assertEquals(3, tree.getRoot().leftSon.nodeData);
@@ -19,6 +20,7 @@ public class testAvlTree {
 	@Test
 	public void rotationChangesRoot() {
 		/* LL violation */
+		tree.add(5);
 		tree.add(3);
 		tree.add(2);
 		Assert.assertEquals(3, tree.getRoot().nodeData);
@@ -30,6 +32,7 @@ public class testAvlTree {
 	@Test
 	public void regularRotation() {
 		/* LR violation */
+		tree.add(5);
 		tree.add(6);
 		tree.add(4);
 		tree.add(2);
@@ -42,6 +45,7 @@ public class testAvlTree {
 
 	@Test
 	public void rightRightViolation() {
+		tree.add(5);
 		tree.add(6);
 		tree.add(8);
 		Assert.assertEquals(6, tree.getRoot().nodeData);
@@ -51,6 +55,7 @@ public class testAvlTree {
 
 	@Test
 	public void rightLeftViolation() {
+		tree.add(5);
 		tree.add(8);
 		tree.add(6);
 		Assert.assertEquals(6, tree.getRoot().nodeData);
@@ -60,12 +65,14 @@ public class testAvlTree {
 
 	@Test
 	public void deleteNodeWithNoSons() {
+		tree.add(5);
 		tree.add(8);
 		Assert.assertEquals(true, tree.delete(8));
 	}
 
 	@Test
 	public void deleteNodeWithOneSon() {
+		tree.add(5);
 		tree.add(4);
 		tree.add(10);
 		tree.add(11);
@@ -75,6 +82,7 @@ public class testAvlTree {
 
 	@Test
 	public void rotateAfterDelete() {
+		tree.add(5);
 		tree.add(6);
 		tree.add(3);
 		tree.add(4);
@@ -99,5 +107,14 @@ public class testAvlTree {
 		Assert.assertEquals(7, AvlTree.findMaxNodes(2));
 		Assert.assertEquals(15, AvlTree.findMaxNodes(3));
 		Assert.assertEquals(31, AvlTree.findMaxNodes(4));
+	}
+
+	@Test
+	public void arrayInitializer() {
+		int[] intArray = {1, 2, 3};
+		AvlTree arrayAvlTree = new AvlTree(intArray);
+		Assert.assertEquals(1, arrayAvlTree.root.leftSon.nodeData);
+		Assert.assertEquals(3, arrayAvlTree.root.rightSon.nodeData);
+		Assert.assertEquals(2, arrayAvlTree.root.nodeData);
 	}
 }

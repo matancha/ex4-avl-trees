@@ -14,15 +14,25 @@ public class BinaryTree implements Iterable{
     /**
      * constructor that creates tree without nodes.
      */
-    BinaryTree(){
-        root=null;
+    public BinaryTree() {
+        root = null;
+    }
+
+    /**
+     * Constructor that creates a tree from a given array.
+     * @param data int array
+     */
+    public BinaryTree(int[] data) {
+        for (int nodeData : data) {
+            add(nodeData);
+        }
     }
 
     /**
      * constructor that creates tree with with the only one node.
      * @param rootData-data for the first node.
      */
-    BinaryTree(int rootData){
+    public BinaryTree(int rootData){
         this.root=new TreeNode(rootData,0);
         this.size=1;
     }
@@ -36,7 +46,7 @@ public class BinaryTree implements Iterable{
         /*left sone of the node. */
         protected TreeNode leftSon;
         /*right sone of the node. */
-        protected TreeNode rightson;
+        protected TreeNode rightSon;
         /*depth of the node, according to the root. */
         protected int depth;
 
@@ -46,13 +56,13 @@ public class BinaryTree implements Iterable{
         /**
          * This constructor creates node with inserted data.
          * @param nodeData-data that contained by node
-         * @param depth- depth of the node accroding to the root.
+         * @param depth- depth of the node according to the root.
          */
         TreeNode(int nodeData,int depth){
             this.depth=depth;
             this.nodeData=nodeData;
             this.leftSon=null;
-            this.rightson=null;
+            this.rightSon =null;
             this.height = 0;
         }
 
@@ -66,7 +76,7 @@ public class BinaryTree implements Iterable{
          */
         public int getNumberOfSuns(){
             int counter=0;
-            if (rightson!=null){
+            if (rightSon !=null){
                 counter++;
             }if (leftSon!=null){
                 counter++;
@@ -76,23 +86,23 @@ public class BinaryTree implements Iterable{
 
     }
     public Iterator<Integer> iterator(){
-        class TreeIterator implements Iterator<Integer>{
+        class TreeIterator implements Iterator<Integer> {
             private TreeNode current;
             TreeIterator(){
-                current=root;
-            }public boolean hasNext(){
+                current = root;
+            } public boolean hasNext(){
                 if (current.leftSon!=null){
                     return true;
                 }
                 return false;
-            }public Integer next(){
+            } public Integer next(){
                 if (current.leftSon!=null){
                     current=current.leftSon;
                     return next();
-                }if (current.rightson!=null){
-                    current=current=current.rightson;
+                } if (current.rightSon !=null){
+                    current=current=current.rightSon;
                     return next();
-                }return current.nodeData;
+                } return current.nodeData;
             }
         }
         return new TreeIterator();
@@ -131,10 +141,10 @@ public class BinaryTree implements Iterable{
                 currentNode.leftSon=new TreeNode(newValue,currentNode.depth+1);
             }
         }else if(currentNode.nodeData<newValue){
-            if (currentNode.rightson!=null){
-                return addHelper(newValue,currentNode.rightson);
+            if (currentNode.rightSon !=null){
+                return addHelper(newValue,currentNode.rightSon);
             }else{
-                currentNode.rightson=new TreeNode(newValue,currentNode.depth+1);
+                currentNode.rightSon =new TreeNode(newValue,currentNode.depth+1);
             }
         }
         return true;
@@ -200,8 +210,8 @@ public class BinaryTree implements Iterable{
      * @param foundedNode Node for deleting
      */
     private void zeroSonsCase(TreeNode foundedBranching,TreeNode foundedNode){
-        if (foundedBranching.rightson==foundedNode){
-            foundedBranching.rightson=null;
+        if (foundedBranching.rightSon ==foundedNode){
+            foundedBranching.rightSon =null;
         }else if (foundedBranching.leftSon==foundedNode){
             foundedBranching.leftSon=null;
         }else{
@@ -215,12 +225,12 @@ public class BinaryTree implements Iterable{
      * @param foundedNode Node for deleting
      */
     private void oneSonCase(TreeNode foundedBranching,TreeNode foundedNode){
-        if (foundedNode.rightson!=null){
+        if (foundedNode.rightSon !=null){
             if (foundedBranching!=foundedNode){
-                foundedBranching.rightson=foundedNode.rightson;
-                foundedBranching.rightson.depth--;
+                foundedBranching.rightSon =foundedNode.rightSon;
+                foundedBranching.rightSon.depth--;
             }else{
-                root=foundedBranching.rightson;
+                root=foundedBranching.rightSon;
                 root.depth--;
             }
         }else {
@@ -239,16 +249,16 @@ public class BinaryTree implements Iterable{
      * @param root node that have to be deleted.
      */
     private void twoSonsCase(TreeNode root){
-        TreeNode smallestBrancing= successor(root.rightson);
-        if (smallestBrancing!=root.rightson){
+        TreeNode smallestBrancing= successor(root.rightSon);
+        if (smallestBrancing!=root.rightSon){
             root.nodeData=smallestBrancing.leftSon.nodeData;
         }else{
-            root.nodeData=root.rightson.nodeData;
+            root.nodeData=root.rightSon.nodeData;
         }
         TreeNode chosenSon=smallestBrancing.leftSon;;
-        if (smallestBrancing==root.rightson) {
+        if (smallestBrancing==root.rightSon) {
             smallestBrancing=root;
-            chosenSon=root.rightson;
+            chosenSon=root.rightSon;
         }
         switch (chosenSon.getNumberOfSuns()) {
             case 0:
@@ -263,7 +273,7 @@ public class BinaryTree implements Iterable{
     /**
      * this method find branching with smallest node in subtree with inserted root.
      * @param root-root of the subtree where we are searching for the smallest node.
-     * @return Node,such that left son if it is not null it is mallest node in subtree.
+     * @return Node,such that left son if it is not null it is smallest node in subtree.
      */
     private TreeNode successor(TreeNode root){
         TreeNode current=root;
@@ -284,9 +294,9 @@ public class BinaryTree implements Iterable{
      * value,null otherwise.
      */
     private TreeNode determineSon(TreeNode foundedBranching,int toDetermine){
-        if (foundedBranching.rightson!=null){
-            if (foundedBranching.rightson.nodeData==toDetermine){
-                return foundedBranching.rightson;
+        if (foundedBranching.rightSon !=null){
+            if (foundedBranching.rightSon.nodeData==toDetermine){
+                return foundedBranching.rightSon;
             }
         }else if(foundedBranching.leftSon!=null){
             if (foundedBranching.leftSon.nodeData==toDetermine){
@@ -314,11 +324,11 @@ public class BinaryTree implements Iterable{
                 }
                 currentNode = currentNode.leftSon;
             } else if (currentNode.nodeData < searchVal) {
-                if (currentNode.rightson!=null){
-                    if (currentNode.rightson.nodeData==searchVal){
+                if (currentNode.rightSon !=null){
+                    if (currentNode.rightSon.nodeData==searchVal){
                         return currentNode;
                     }
-                }currentNode = currentNode.rightson;
+                }currentNode = currentNode.rightSon;
             }
         }
         return currentNode;
@@ -328,7 +338,7 @@ public class BinaryTree implements Iterable{
         System.out.println(myTree.root.nodeData==3);
         myTree.add(4);
         System.out.println(myTree.contains(4)==1);
-        System.out.println(myTree.root.rightson.nodeData==4);
+        System.out.println(myTree.root.rightSon.nodeData==4);
         myTree.add(2);
         System.out.println(myTree.contains(2)==1);
         System.out.println(!myTree.add(2));

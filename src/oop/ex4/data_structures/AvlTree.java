@@ -1,8 +1,19 @@
 package oop.ex4.data_structures;
 
 public class AvlTree extends BinaryTree {
-	public AvlTree(int rootData){
-		super(5);
+	/**
+	 * constructor that creates an AVL tree without nodes.
+	 */
+	public AvlTree(){
+		super();
+	}
+
+	/**
+	 * Constructor that creates an AVL tree from a given array
+	 * @param data int array
+	 */
+	public AvlTree(int[] data) {
+		super(data);
 	}
 
 	/**
