@@ -96,22 +96,24 @@ public class AvlTree extends BinaryTree {
 		return subtreeRoot;
 	}
 
-	private TreeNode leftRotate(TreeNode node) {
-		TreeNode subtreeRoot;
+	private TreeNode leftRotate(TreeNode subtreeRoot) {
+		TreeNode newRoot = subtreeRoot.rightSon;
+		TreeNode transferredSon = newRoot.leftSon;
 
-		subtreeRoot = node.rightSon;
-		subtreeRoot.leftSon = node;
-		node.rightSon = null;
-		return subtreeRoot;
+		newRoot.leftSon = subtreeRoot;
+		subtreeRoot.rightSon = transferredSon;
+
+		return newRoot;
 	}
 
-	private TreeNode rightRotate(TreeNode node) {
-		TreeNode subtreeRoot;
+	private TreeNode rightRotate(TreeNode subtreeRoot) {
+		TreeNode newRoot = subtreeRoot.leftSon;
+		TreeNode transferredSon = newRoot.rightSon;
 
-		subtreeRoot = node.leftSon;
-		subtreeRoot.rightSon = node;
-		node.leftSon = null;
-		return subtreeRoot;
+		newRoot.rightSon = subtreeRoot;
+		subtreeRoot.leftSon = transferredSon;
+
+		return newRoot;
 	}
 
 	private UnbalancedState getUnbalancedState(TreeNode unbalancedNode) {

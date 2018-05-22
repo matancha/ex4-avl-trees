@@ -74,6 +74,18 @@ public class testAvlTree {
 	}
 
 	@Test
+	public void rotateAfterDelete() {
+		tree.add(6);
+		tree.add(3);
+		tree.add(4);
+		tree.add(2);
+		tree.delete(6);
+		Assert.assertEquals(3, tree.getRoot().nodeData);
+		Assert.assertEquals(5, tree.getRoot().rightSon.nodeData);
+		Assert.assertEquals(4, tree.getRoot().rightSon.leftSon.nodeData);
+	}
+
+	@Test
 	public void getMinNodes() {
 		Assert.assertEquals(2, AvlTree.findMinNodes(1));
 		Assert.assertEquals(4, AvlTree.findMinNodes(2));
