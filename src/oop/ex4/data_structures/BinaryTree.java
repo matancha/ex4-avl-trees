@@ -58,10 +58,10 @@ public class BinaryTree implements Iterable<Integer> {
         protected TreeNode rightSon;
         /*depth of the node, according to the root. */
         protected int depth;
-
+        /* height of the node */
         protected int height;
-        /*----=Constructor=----*/
 
+        /*----=Constructors=----*/
         /**
          * This constructor creates node with inserted data.
          * @param nodeData-data that contained by node
@@ -75,15 +75,11 @@ public class BinaryTree implements Iterable<Integer> {
             this.height = 0;
         }
 
-        public int getHeight() {
-            return height;
-        }
-
         /**
          * this function for counting number of suns for deleting.
          * @return number of the sons that are not null
          */
-        public int getNumberOfSuns(){
+        public int getNumberOfSons(){
             int counter=0;
             if (rightSon!=null){
                 counter++;
@@ -255,7 +251,7 @@ public class BinaryTree implements Iterable<Integer> {
             if (foundedNode==null){
                 foundedNode=foundedBranching;
             }
-            switch (foundedNode.getNumberOfSuns()){
+            switch (foundedNode.getNumberOfSons()){
                 case 0:
                     zeroSonsCase(foundedBranching,foundedNode);
                     break;
@@ -329,7 +325,7 @@ public class BinaryTree implements Iterable<Integer> {
             smallestBrancing=root;
             chosenSon=root.rightSon;
         }
-        switch (chosenSon.getNumberOfSuns()) {
+        switch (chosenSon.getNumberOfSons()) {
             case 0:
                 zeroSonsCase(smallestBrancing, chosenSon);
                 break;
@@ -401,38 +397,5 @@ public class BinaryTree implements Iterable<Integer> {
             }
         }
         return currentNode;
-    }
-    public static void main(String[] args){
-        BinaryTree myTree=new BinaryTree();
-        myTree.add(3);
-        System.out.println(myTree.root.nodeData==3);
-        myTree.add(4);
-        System.out.println(myTree.contains(4)==1);
-        System.out.println(myTree.root.rightSon.nodeData==4);
-        myTree.add(2);
-//        System.out.println(myTree.contains(2)==1);
-//        System.out.println(!myTree.add(2));
-//        System.out.println(myTree.root.getNumberOfSuns()==2);
-//        System.out.println(myTree.size);
-//        System.out.println(myTree.size()==3);
-//        System.out.println(myTree.contains(4)==1);
-//        myTree.delete(3);
-//        System.out.println(myTree.contains(3)==-1);
-//        System.out.println(myTree.size()==2);
-//        System.out.println(!myTree.delete(3));
-//        System.out.println(myTree.root.depth==0);
-//        System.out.println(myTree.contains(4)==0);
-//        System.out.println(myTree.delete(4));
-//        System.out.println(myTree.contains(2)==0);
-//
-//        myTree.delete(2);
-//        System.out.println(myTree.size==0);
-//        System.out.println(!myTree.delete(2));
-
-        Iterator<Integer> iter=myTree.iterator();
-        for (int i=0;i<myTree.size;i++){
-            System.out.println(iter.next());
-        }
-
     }
 }
