@@ -5,9 +5,29 @@ molodoy
 =    File Description    =
 ==========================
 
+BinaryTree.java - Base class implementing a Binary Search Tree. Extendable for other specific implementations
+  of different kinds of BSTs. Contains a nested class - Node, depicting a node in the tree.
+AvlTree.java - Extends the base class BinaryTree. Implements an "AVL tree" - a specific BST which is self-balancing
+  such that its height is O(logn) where n is the number of nodes in the tree
+
+NoViolationException.java - Exception thrown when trying to find a violation type in a node after ascertaining
+  there is a violation, and none is found - not legal.
+
 ================
 =    Design    =
 ================
+
+When given the mission to implement an AVL tree, we right away understood that although we were given that
+  specific mission there is a logic to separate the mission to parts. If we would just create an AVLTree class,
+  this class would be very useful except when using AVL trees. This tree is self-balancing unlike other BSTs
+  and specifically uses the height attribute.
+
+As a result, we decided that the basic functionality of a BST should be in class of its own that is easily extendable,
+  and specific AVL-related methods would be in an inheriting class AVLTree. Thus, we maintain the ability for future
+  changes.
+
+Moreover, an AVL tree has a is-a relationship with its parent BST tree and so using inheritance, as we did, is good
+  practice by OOP standards.
 
 ================================
 =    Implementation details    =
