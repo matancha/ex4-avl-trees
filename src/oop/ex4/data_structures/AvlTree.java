@@ -16,10 +16,6 @@ public class AvlTree extends BinaryTree {
 		super(data);
 	}
 
-	public AvlTree(AvlTree tree){
-	    super(tree);
-    }
-
 	/**
 	 * Constructor that creates an AVL tree as a copy of an existing AVL tree
 	 * @param avlTree AVL tree to copy
