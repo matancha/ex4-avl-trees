@@ -1,0 +1,75 @@
+matancha
+molodoy
+
+==========================
+=    File Description    =
+==========================
+
+BinaryTree.java - Base class implementing a Binary Search Tree. Extendable for other specific implementations
+  of different kinds of BSTs. Contains a nested class - Node, depicting a node in the tree.
+AvlTree.java - Extends the base class BinaryTree. Implements an "AVL tree" - a specific BST which is self-balancing
+  such that its height is O(logn) where n is the number of nodes in the tree
+
+NoViolationException.java - Exception thrown when trying to find a violation type in a node after ascertaining
+  there is a violation, and none is found - not legal.
+
+================
+=    Design    =
+================
+
+When given the mission to implement an AVL tree, we right away understood that although we were given that
+  specific mission there is a logic to separate the mission to parts. If we would just create an AVLTree class,
+  this class would be very useful except when using AVL trees. This tree is self-balancing unlike other BSTs
+  and specifically uses the height attribute.
+
+As a result, we decided that the basic functionality of a BST should be in class of its own that is easily extendable,
+  and specific AVL-related methods would be in an inheriting class AVLTree. Thus, we maintain the ability for future
+  changes.
+
+Moreover, an AVL tree has a is-a relationship with its parent BST tree and so using inheritance, as we did, is good
+  practice by OOP standards.
+
+================================
+=    Implementation details    =
+================================
+We decided to implement our Nodes without pointer to the ancestor,
+because of three  reasons:
+1)To make code more readable,because also we implemented design with
+ancestor and in delete we were not able to make code more readable because
+of big number of pointers such that:node.ancestor.rightson=node.rightson.
+2)we thought that for tree more naturally recursive implementation.
+3)When we discussed AVL trees on the DAST we marked pointers just
+in one direction:from ancestor to the sons and it make sense
+that it is natural building of AVL tree.
+We also decided to implement iterator() and constructor that receive other
+tree and create copy of that also in BiraryTree because it also actual
+for Binary tree.
+==============================
+=    Answers to questions    =
+==============================
+
+5.1
+  1. 8,10,3,2,11,5,9,12,1,4,6,7.
+5.2
+  1. What is the asymptotic running time complexity of the tree construction done in AvlTree(int[] data)?
+    O(nlogn). We iterate over each array member - O(n), and add it using the add function which in a balanced tree
+    is O(logn). Our total time complexity is: O(n*logn).
+  2. If we get an ordered array - we can add all nodes in O(n).
+         This is the best possible outcome, because we have to iterate over all array members to add them - that is
+         O(n).
+
+5.3
+  1. What is the asymptotic running time complexity of the tree construction done in AvlTree(AvlTree avlTree)?
+    O(n). Our algorithm has two parts:
+      a. Getting a number from the iterator. When initialized does O(n) actions to create an ordered array.
+      b. Adding to the tree each member is O(1), as it's only determining the reference in another node.
+      For n nodes - that is O(n).
+    When summing we get O(n) time complexity.
+  2. If we get an ordered array - we can add all nodes in O(n).
+    This is the best possible outcome, because we have to iterate over all array members to add them - that is
+    O(n).
+5.4
+  1.In our implementation asymptotic running time complexity is O(1) because
+    math operation require constant number of actions.
+  2. It is also best possible asymptotic running time complexity at least
+   because it is the lowest assymptotic running time complexity.

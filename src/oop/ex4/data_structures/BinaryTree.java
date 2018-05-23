@@ -1,22 +1,21 @@
 package oop.ex4.data_structures;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 
-public class BinaryTree implements Iterable{
+public class BinaryTree implements Iterable<Integer> {
     /* root of the tree. */
     protected TreeNode root;
     /* current size of the tree. */
     protected int size;
 
     /*----=Constructors=----*/
-
     /**
      * constructor that creates tree without nodes.
      */
     BinaryTree(){
         root=null;
+        size=0;
     }
 
     /**
@@ -24,6 +23,14 @@ public class BinaryTree implements Iterable{
      * @param data int array
      */
     public BinaryTree(int[] data) {
+        try {
+            if (data == null) {
+                throw new NullPointerException();
+            }
+        } catch (NullPointerException e) {
+            return;
+        }
+
         for (int nodeData : data) {
             add(nodeData);
         }
@@ -37,13 +44,14 @@ public class BinaryTree implements Iterable{
     public BinaryTree(BinaryTree binaryTree){
          root=null;
          Iterator<Integer> iter=binaryTree.iterator();
+         if (iter == null){
+             return;
+         }
          int[] data=new int[binaryTree.size()];
          for (int i=0;i<binaryTree.size();i++){
              data[i]=iter.next();
          }
-         inserter(0,binaryTree.size(),data);
-
-
+         inserter(0,binaryTree.size()-1,data);
     }
 
     /**
@@ -56,34 +64,26 @@ public class BinaryTree implements Iterable{
         protected TreeNode leftSon;
         /*right sone of the node. */
         protected TreeNode rightSon;
-        /*depth of the node, according to the root. */
-        protected int depth;
-
+        /* height of the node */
         protected int height;
-        /*----=Constructor=----*/
 
+        /*----=Constructors=----*/
         /**
          * This constructor creates node with inserted data.
          * @param nodeData-data that contained by node
-         * @param depth- depth of the node accroding to the root.
          */
-        TreeNode(int nodeData,int depth){
-            this.depth=depth;
+        TreeNode(int nodeData){
             this.nodeData=nodeData;
             this.leftSon=null;
             this.rightSon=null;
             this.height = 0;
         }
 
-        public int getHeight() {
-            return height;
-        }
-
         /**
          * this function for counting number of suns for deleting.
          * @return number of the sons that are not null
          */
-        public int getNumberOfSuns(){
+        public int getNumberOfSons(){
             int counter=0;
             if (rightSon!=null){
                 counter++;
@@ -102,8 +102,6 @@ public class BinaryTree implements Iterable{
      * @return Iterator of tree data.
      */
     public Iterator<Integer> iterator(){
-        /*this class implements iterator of tree data. */
-
         class TreeIterator implements Iterator<Integer>{
             /*this array for containing all data of tree in sorted order. */
             private int[] sortedList;
@@ -111,12 +109,10 @@ public class BinaryTree implements Iterable{
             int index;
             /*Creates TreeIterator. */
             TreeIterator(){
-                if (size>0){
-                    sortedList=new int[size];
-                    index=0;
-                    createList(root);
-                    index=0;
-                }
+                sortedList=new int[size];
+                index=0;
+                createList(root);
+                index=0;
             }
 
             /**
@@ -124,13 +120,7 @@ public class BinaryTree implements Iterable{
              * @return true if there are elements that was not returned,false otherwise.
              */
             public boolean hasNext(){
-                try{
-                    if (index<size){
-                        return true;
-                    }else throw new NoSuchElementException();
-                }catch (NoSuchElementException e){
-                    return false;
-                }
+                return index<sortedList.length;
             }
 
             /**
@@ -152,6 +142,11 @@ public class BinaryTree implements Iterable{
              * @param node-node of the tree for next adding
              */
             private void createList(TreeNode node){
+                if (node == null){
+                    sortedList = new int[0];
+                    return;
+                }
+
                 if (node.leftSon!=null){
                     createList(node.leftSon);
                 }sortedList[index]=node.nodeData;
@@ -172,12 +167,13 @@ public class BinaryTree implements Iterable{
      * @param data integer for inserting into the tree.
      */
     private void inserter(int low,int high,int[] data){
-        if (high-low>1){
+        if (high>=low){
             int mid=(low+high)/2;
             add(data[mid]);
-            inserter(low,mid,data);
+            inserter(low,mid-1,data);
             inserter(mid+1,high,data);
         }
+
     }
 
     /**
@@ -188,7 +184,7 @@ public class BinaryTree implements Iterable{
      */
     public boolean add(int newValue){
         if (root==null){
-            root=new TreeNode(newValue,0);
+            root=new TreeNode(newValue);
             size++;
             return true;
         }
@@ -210,13 +206,13 @@ public class BinaryTree implements Iterable{
             if (currentNode.leftSon!=null){
                 return addHelper(newValue,currentNode.leftSon);
             }else{
-                currentNode.leftSon=new TreeNode(newValue,currentNode.depth+1);
+                currentNode.leftSon=new TreeNode(newValue);
             }
         }else if(currentNode.nodeData<newValue){
             if (currentNode.rightSon!=null){
                 return addHelper(newValue,currentNode.rightSon);
             }else{
-                currentNode.rightSon=new TreeNode(newValue,currentNode.depth+1);
+                currentNode.rightSon=new TreeNode(newValue);
             }
         }
         return true;
@@ -229,18 +225,20 @@ public class BinaryTree implements Iterable{
      * if it was found in the tree,-1 otherwise.
      */
     public int contains(int searchVal){
-        if (size!=0){
-            if (searchVal==root.nodeData){
-                return 0;
+        TreeNode currentNode = root;
+        int i = 0;
+        while (currentNode != null) {
+            if (currentNode.nodeData > searchVal) {
+                currentNode = currentNode.leftSon;
+                } else if (currentNode.nodeData < searchVal) {
+                currentNode = currentNode.rightSon;
+                } else {
+                return i;
+                }
+            i += 1;
             }
-            TreeNode foundedBranching=findBranching(searchVal);
-            if (foundedBranching!=null){
-                return foundedBranching.depth+1;
-            }
-        }
-
         return -1;
-    }
+        }
 
     /**
      * @return the number of nodes in the tree.
@@ -256,16 +254,12 @@ public class BinaryTree implements Iterable{
      */
     public boolean delete(int toDelete){
         TreeNode foundedBranching=findBranching(toDelete);
-        if (toDelete==4){
-            System.out.println("data");
-            System.out.println(root.nodeData);
-        }
         if (foundedBranching!=null){
             TreeNode foundedNode=determineSon(foundedBranching,toDelete);
             if (foundedNode==null){
                 foundedNode=foundedBranching;
             }
-            switch (foundedNode.getNumberOfSuns()){
+            switch (foundedNode.getNumberOfSons()){
                 case 0:
                     zeroSonsCase(foundedBranching,foundedNode);
                     break;
@@ -278,8 +272,6 @@ public class BinaryTree implements Iterable{
             }
             size--;
             return true;
-        }else{
-            System.out.println(toDelete);
         }
         return false;
     }
@@ -308,19 +300,22 @@ public class BinaryTree implements Iterable{
     private void oneSonCase(TreeNode foundedBranching,TreeNode foundedNode){
         if (foundedNode.rightSon!=null){
             if (foundedBranching!=foundedNode){
-                foundedBranching.rightSon=foundedNode.rightSon;
-                foundedBranching.rightSon.depth--;
+                if (foundedBranching.rightSon == foundedNode){
+                    foundedBranching.rightSon=foundedNode.rightSon;
+                } else if (foundedBranching.leftSon == foundedNode){
+                    foundedBranching.leftSon=foundedNode.rightSon; }
             }else{
                 root=foundedBranching.rightSon;
-                root.depth--;
             }
         }else {
             if (foundedBranching!=foundedNode){
-                foundedBranching.leftSon=foundedNode.leftSon;
-                foundedBranching.leftSon.depth--;
+                if (foundedBranching.rightSon == foundedNode){
+                    foundedBranching.rightSon=foundedNode.leftSon;
+                } else if (foundedBranching.leftSon == foundedNode){
+                    foundedBranching.leftSon=foundedNode.leftSon;
+                }
             }else{
                 root=foundedBranching.leftSon;
-                root.depth--;
             }
         }
     }
@@ -341,7 +336,7 @@ public class BinaryTree implements Iterable{
             smallestBrancing=root;
             chosenSon=root.rightSon;
         }
-        switch (chosenSon.getNumberOfSuns()) {
+        switch (chosenSon.getNumberOfSons()) {
             case 0:
                 zeroSonsCase(smallestBrancing, chosenSon);
                 break;
@@ -379,7 +374,7 @@ public class BinaryTree implements Iterable{
             if (foundedBranching.rightSon.nodeData==toDetermine){
                 return foundedBranching.rightSon;
             }
-        }if(foundedBranching.leftSon!=null){
+        } if (foundedBranching.leftSon!=null){
             if (foundedBranching.leftSon.nodeData==toDetermine){
                 return foundedBranching.leftSon;
             }
@@ -413,54 +408,5 @@ public class BinaryTree implements Iterable{
             }
         }
         return currentNode;
-    }
-    public static void main(String[] args){
-        BinaryTree myTree=new BinaryTree();
-        myTree.add(3);
-        for (int i=0;i<20;i++){
-            myTree.add(i);
-        }for (int i=0;i<20;i++){
-            if(myTree.contains(i)==-1){
-                System.out.println("fail");
-            }
-        }
-//        System.out.println(myTree.contains(2)==1);
-//        System.out.println(!myTree.add(2));
-//        System.out.println(myTree.root.getNumberOfSuns()==2);
-//        System.out.println(myTree.size);
-//        System.out.println(myTree.size()==3);
-//        System.out.println(myTree.contains(4)==1);
-//        myTree.delete(3);
-//        System.out.println(myTree.contains(3)==-1);
-//        System.out.println(myTree.size()==2);
-//        System.out.println(!myTree.delete(3));
-//        System.out.println(myTree.root.depth==0);
-//        System.out.println(myTree.contains(4)==0);
-//        System.out.println(myTree.delete(4));
-//        System.out.println(myTree.contains(2)==0);
-//
-//        myTree.delete(2);
-//        System.out.println(myTree.size==0);
-//        System.out.println(!myTree.delete(2));
-
-        Iterator iter=myTree.iterator();
-        for (int i=0;i<20;i++){
-            if (myTree.root.nodeData==1){
-                System.out.println("problem");
-                System.out.println(i);
-            }
-            if(!myTree.delete(i)){
-                System.out.println("root");
-                System.out.println(myTree.root.nodeData);
-                System.out.println("fail");
-                System.out.println(i);
-            }if (myTree.contains(i)!=-1){
-
-                System.out.println(i);
-                System.out.println("ebt");
-            }
-        }
-
-
     }
 }
