@@ -50,6 +50,8 @@ for Binary tree.
 =    Answers to questions    =
 ==============================
 
+5.1
+  1. 8,10,3,2,11,5,9,12,1,4,6,7.
 5.2
   1. What is the asymptotic running time complexity of the tree construction done in AvlTree(int[] data)?
     O(nlogn). We iterate over each array member - O(n), and add it using the add function which in a balanced tree
@@ -68,3 +70,8 @@ for Binary tree.
   2. If we get an ordered array - we can add all nodes in O(n).
     This is the best possible outcome, because we have to iterate over all array members to add them - that is
     O(n).
+5.4
+  1.In our implementation asymptotic running time complexity is O(1) because
+    math operation require constant number of actions.
+  2. It is also best possible asymptotic running time complexity at least
+   because it is the lowest assymptotic running time complexity.
