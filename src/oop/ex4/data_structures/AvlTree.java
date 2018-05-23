@@ -21,6 +21,14 @@ public class AvlTree extends BinaryTree {
     }
 
 	/**
+	 * Constructor that creates an AVL tree as a copy of an existing AVL tree
+	 * @param avlTree AVL tree to copy
+	 */
+	public AvlTree(AvlTree avlTree) {
+		super(avlTree);
+	}
+
+	/**
 	 * Get minimum number of nodes in a tree of height h
 	 * @param h height of tree
 	 * @return minimum
@@ -222,9 +230,5 @@ public class AvlTree extends BinaryTree {
 		subtreeRoot.leftSon = transferredSon;
 
 		return newRoot;
-	}
-
-	protected TreeNode getRoot(){
-		return root;
 	}
 }

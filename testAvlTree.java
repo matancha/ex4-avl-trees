@@ -77,22 +77,7 @@ public class testAvlTree {
 		tree.add(10);
 		tree.add(11);
 		Assert.assertEquals(true, tree.delete(10));
-		Assert.assertEquals(5, tree.getRoot().nodeData);
-		Assert.assertEquals(-1, tree.contains(10));
 		Assert.assertEquals(11, tree.getRoot().rightSon.nodeData);
-	}
-
-	@Test
-	public void deleteRoot() {
-		tree.add(5);
-		tree.add(6);
-		tree.add(3);
-		tree.add(4);
-		Assert.assertEquals(true, tree.delete(3));
-		Assert.assertEquals(5, tree.getRoot().nodeData);
-		Assert.assertEquals(1, tree.contains(4));
-		Assert.assertEquals(-1, tree.contains(3));
-		Assert.assertEquals(4, tree.getRoot().leftSon.nodeData);
 	}
 
 	@Test
