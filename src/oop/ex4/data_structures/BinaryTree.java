@@ -3,7 +3,7 @@ package oop.ex4.data_structures;
 import java.util.Iterator;
 
 
-public class BinaryTree implements Iterable{
+public class BinaryTree implements Iterable<Integer> {
     /* root of the tree. */
     protected TreeNode root;
     /* current size of the tree. */
@@ -429,7 +429,7 @@ public class BinaryTree implements Iterable{
 //        System.out.println(myTree.size==0);
 //        System.out.println(!myTree.delete(2));
 
-        Iterator iter=myTree.iterator();
+        Iterator<Integer> iter=myTree.iterator();
         for (int i=0;i<myTree.size;i++){
             System.out.println(iter.next());
         }

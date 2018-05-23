@@ -16,6 +16,10 @@ public class AvlTree extends BinaryTree {
 		super(data);
 	}
 
+	public AvlTree(AvlTree avlTree) {
+		super(avlTree);
+	}
+
 	/**
 	 * Get minimum number of nodes in a tree of height h
 	 * @param h height of tree

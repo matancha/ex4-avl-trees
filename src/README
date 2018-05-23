@@ -1,0 +1,37 @@
+matancha
+molodoy
+
+==========================
+=    File Description    =
+==========================
+
+================
+=    Design    =
+================
+
+================================
+=    Implementation details    =
+================================
+
+==============================
+=    Answers to questions    =
+==============================
+
+5.2
+  1. What is the asymptotic running time complexity of the tree construction done in AvlTree(int[] data)?
+    O(nlogn). We iterate over each array member - O(n), and add it using the add function which in a balanced tree
+    is O(logn). Our total time complexity is: O(n*logn).
+  2. If we get an ordered array - we can add all nodes in O(n).
+         This is the best possible outcome, because we have to iterate over all array members to add them - that is
+         O(n).
+
+5.3
+  1. What is the asymptotic running time complexity of the tree construction done in AvlTree(AvlTree avlTree)?
+    O(n). Our algorithm has two parts:
+      a. Getting a number from the iterator. When initialized does O(n) actions to create an ordered array.
+      b. Adding to the tree each member is O(1), as it's only determining the reference in another node.
+      For n nodes - that is O(n).
+    When summing we get O(n) time complexity.
+  2. If we get an ordered array - we can add all nodes in O(n).
+    This is the best possible outcome, because we have to iterate over all array members to add them - that is
+    O(n).
