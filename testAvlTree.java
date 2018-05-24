@@ -1,6 +1,7 @@
 package oop.ex4.data_structures;
 
 import org.junit.*;
+import org.w3c.dom.ranges.Range;
 
 public class testAvlTree {
 	private AvlTree tree;
@@ -9,7 +10,7 @@ public class testAvlTree {
 		tree = new AvlTree();
 	}
 
-	@Test
+	/*@Test
 	public void addNodeToTree() {
 		Assert.assertEquals(true, tree.add(5));
 		Assert.assertEquals(true, tree.add(3));
@@ -19,7 +20,7 @@ public class testAvlTree {
 
 	@Test
 	public void rotationChangesRoot() {
-		/* LL violation */
+		*//* LL violation *//*
 		tree.add(5);
 		tree.add(3);
 		tree.add(2);
@@ -27,7 +28,7 @@ public class testAvlTree {
 		Assert.assertEquals(5, tree.getRoot().rightSon.nodeData);
 		Assert.assertEquals(2, tree.getRoot().leftSon.nodeData);
 		Assert.assertEquals(1, tree.getRoot().getHeight());
-	}
+	}*/
 
 	@Test
 	public void regularRotation() {
@@ -131,5 +132,17 @@ public class testAvlTree {
 		Assert.assertEquals(1, arrayAvlTree.root.leftSon.nodeData);
 		Assert.assertEquals(3, arrayAvlTree.root.rightSon.nodeData);
 		Assert.assertEquals(2, arrayAvlTree.root.nodeData);
+	}
+
+	@Test
+	public void createFromArrayThenCopyTree() {
+		int[] data=new int[15];
+		for (int i=0;i<15;i++){
+			data[i]=i;
+		}
+		AvlTree firstTree=new AvlTree(data);
+		Assert.assertEquals(5, firstTree.getRoot().nodeData);
+		AvlTree secondTree=new AvlTree(firstTree);
+		Assert.assertEquals(7, secondTree.getRoot().nodeData);
 	}
 }

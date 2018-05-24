@@ -18,6 +18,10 @@ public class BinaryTree implements Iterable<Integer> {
         size=0;
     }
 
+    public TreeNode getRoot() {
+        return root;
+    }
+
     /**
      * Constructor that creates a tree from a given array.
      * @param data int array
@@ -42,7 +46,6 @@ public class BinaryTree implements Iterable<Integer> {
      * @param binaryTree Tree for coping
      */
     public BinaryTree(BinaryTree binaryTree){
-         root=null;
          Iterator<Integer> iter=binaryTree.iterator();
          if (iter == null){
              return;
@@ -51,7 +54,7 @@ public class BinaryTree implements Iterable<Integer> {
          for (int i=0;i<binaryTree.size();i++){
              data[i]=iter.next();
          }
-         inserter(0,binaryTree.size()-1,data);
+         root=inserter(0,binaryTree.size()-1,data);
     }
 
     /**
@@ -67,6 +70,7 @@ public class BinaryTree implements Iterable<Integer> {
         /* height of the node */
         protected int height;
 
+        /*----=Constructors=----*/
         /*----=Constructors=----*/
         /**
          * This constructor creates node with inserted data.
@@ -166,14 +170,15 @@ public class BinaryTree implements Iterable<Integer> {
      * @param high high bound
      * @param data integer for inserting into the tree.
      */
-    private void inserter(int low,int high,int[] data){
+    private TreeNode inserter(int low,int high,int[] data){
+        TreeNode node;
         if (high>=low){
             int mid=(low+high)/2;
-            add(data[mid]);
-            inserter(low,mid-1,data);
-            inserter(mid+1,high,data);
-        }
-
+            node=new TreeNode(data[mid]);
+            node.leftSon=inserter(low,mid-1,data);
+            node.rightSon=inserter(mid+1,high,data);
+            return node;
+        }return null;
     }
 
     /**
